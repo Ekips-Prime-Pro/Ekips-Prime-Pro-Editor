@@ -10,6 +10,7 @@ import shutil
 import webbrowser as website
 import usb.core 
 import serial.tools.list_ports as list_ports
+import socket
 
 #TODO: remove global variables
 global file_name
@@ -127,8 +128,9 @@ class gui:
             messagebox.showerror("Error", "Error while opening file")
     
     def main_programm(self):
+        self.author_name = socket.gethostname()
         self.file_label = CTkLabel(self.app, text="File: N/A")
-        self.file_author = CTkLabel(self.app, text="Author: N/A")
+        self.file_author = CTkLabel(self.app, text=f"Author: {self.author_name}")
         self.file_label.place(x=150, y=0)
         self.file_author.place(x=220, y=0)
         self.file_content = tk.Text(self.app)
@@ -287,35 +289,8 @@ class tools:
         
 class compiler:
     def __init__():
-        pass
-    
-    def debug():
-        pass
-    
-    def compile():
-        pass
-    
-    def compile_to_llsp3(): # TODO: Compile to llsp3 with the list
-        file_reihenfolge = []
-        for element in file_reihenfolge:
-            match element:
-                case "ai.supervised":
-                    pass
-                case "ai.unsupervised":
-                    pass
-                case "ai.reinforcement":
-                    pass
-                case "motor":
-                    pass
-                case "sensor":
-                    pass
-                case "display":
-                    pass
-                case "module":
-                    pass
-    
-    def file_reader():
-        pass
+        gui.save()
+        shutil.
 
 
 if __name__ == "__main__":
