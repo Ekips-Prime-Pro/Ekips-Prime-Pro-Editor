@@ -185,7 +185,7 @@ class gui:
         self.tools.add_command(label="Debug", command=compiler.debug)
         self.tools.add_command(label="Compile", command=compiler.compile)
         self.tools.add_command(label="Pull", command=tools.pull)
-        self.tools.add_command(label="compile to llsp3 file", command=compiler.compile_to_llsp3)
+        self.tools.add_command(label="compile to llsp3 file", command=compiler.start(self.file))
         
         self.spike = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Spike", menu=self.spike)
@@ -288,10 +288,9 @@ class tools:
      
         
 class compiler:
-    def __init__():
+    def start(file):
         gui.save()
-        shutil.
-
+        os.system(f"python3 compiler.py {file}")
 
 if __name__ == "__main__":
     gui()
