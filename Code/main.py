@@ -9,7 +9,7 @@ import sys
 import shutil
 import webbrowser as website
 import usb.core 
-import serial.tools.list_ports as list_ports
+import serial as list_ports
 
 #TODO: remove global variables
 global file_name
@@ -128,7 +128,7 @@ class gui:
     
     def main_programm(self):
         self.file_label = CTkLabel(self.app, text="File: N/A")
-        self.file_author = CTkLabel(self.app, text="Author: N/A")
+        self.file_author = CTkLabel(self.app, text="Author:"+os.system("whoami"))
         self.file_label.place(x=150, y=0)
         self.file_author.place(x=220, y=0)
         self.file_content = tk.Text(self.app)
