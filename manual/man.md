@@ -5,4 +5,4 @@ This is the GUI manual for the Python based Programming language. This is the op
 ## Content
 
 This is the list of content
-1. 
+1.
