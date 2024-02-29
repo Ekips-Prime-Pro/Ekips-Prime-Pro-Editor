@@ -10,6 +10,7 @@ import shutil
 import webbrowser as website
 import usb.core 
 import serial as list_ports
+import socket
 
 #TODO: remove global variables
 global file_name
@@ -127,8 +128,9 @@ class gui:
             messagebox.showerror("Error", "Error while opening file")
     
     def main_programm(self):
+        self.author_name = socket.gethostname()
         self.file_label = CTkLabel(self.app, text="File: N/A")
-        self.file_author = CTkLabel(self.app, text="Author:"+os.system("whoami"))
+        self.file_author = CTkLabel(self.app, text="Author: N/A")
         self.file_label.place(x=150, y=0)
         self.file_author.place(x=220, y=0)
         self.file_content = tk.Text(self.app)
@@ -183,7 +185,7 @@ class gui:
         self.tools.add_command(label="Debug", command=compiler.debug)
         self.tools.add_command(label="Compile", command=compiler.compile)
         self.tools.add_command(label="Pull", command=tools.pull)
-        self.tools.add_command(label="compile to llsp3 file", command=compiler.compile_to_llsp3)
+        self.tools.add_command(label="compile to llsp3 file", command=compiler.start(self.file))
         
         self.spike = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Spike", menu=self.spike)
@@ -286,37 +288,9 @@ class tools:
      
         
 class compiler:
-    def __init__():
-        pass
-    
-    def debug():
-        pass
-    
-    def compile():
-        pass
-    
-    def compile_to_llsp3(): # TODO: Compile to llsp3 with the list
-        file_reihenfolge = []
-        for element in file_reihenfolge:
-            match element:
-                case "ai.supervised":
-                    pass
-                case "ai.unsupervised":
-                    pass
-                case "ai.reinforcement":
-                    pass
-                case "motor":
-                    pass
-                case "sensor":
-                    pass
-                case "display":
-                    pass
-                case "module":
-                    pass
-    
-    def file_reader():
-        pass
-
+    def start(file):
+        gui.save()
+        os.system(f"python3 compiler.py {file}")
 
 if __name__ == "__main__":
     gui()
