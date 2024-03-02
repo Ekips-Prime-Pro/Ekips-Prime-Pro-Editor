@@ -8,7 +8,7 @@ import os
 import sys
 import shutil
 import webbrowser as website
-import usb.core 
+#import usb.core 
 import serial as list_ports
 import socket
 
