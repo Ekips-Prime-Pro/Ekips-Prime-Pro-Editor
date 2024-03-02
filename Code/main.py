@@ -20,6 +20,9 @@ file_content = "N/A"
 
 class gui:
     def __init__(self):
+        self.font_groesse = 14
+        self.font_content = "Arial"
+        self.author_name = socket.gethostname()
         self.langs = ["English", "German"]
         self.lang = "N/A"
         self.file = "N/A"
@@ -116,10 +119,10 @@ class gui:
     def main_programm(self):
         self.author_name = socket.gethostname()
         self.file_label = CTkLabel(self.app, text="File: N/A")
-        self.file_author = CTkLabel(self.app, text="Author: N/A")
+        self.file_author = CTkLabel(self.app, text=f"Author: {self.author_name}")
         self.file_label.place(x=150, y=0)
         self.file_author.place(x=220, y=0)
-        self.file_content = tk.Text(self.app)
+        self.file_content = tk.Text(self.app, font=f"{self.font_content} {self.font_groesse} bold")
         self.file_content.place(x=230, y=40, relwidth=1, relheight=1)
         self.menu_top()
         self.toolbar()
@@ -199,6 +202,8 @@ class gui:
         
         self.gui_mode = tk.Menu(self.menu, tearoff=0) #TODO:  add the difrent modes and settings
         self.menu.add_cascade(label="Mode", menu=self.gui_mode)
+        self.gui_mode.add_command(label="Set font", command=self.font)
+        self.gui_mode.add_separator()
         self.gui_mode.add_command(label="Light Mode")
         self.gui_mode.add_command(label="Dark Mode")
         self.gui_mode.add_separator()
@@ -215,6 +220,26 @@ class gui:
         self.entry.pack()
         self.button = CTkButton(self.author, text="Rename", command=self.rename)
         self.button.pack()
+        
+    def font(self):
+        self.combobox1_get = tk.StringVar()
+        self.combobox2_get = tk.StringVar()
+        self.font_app = tk.Tk()
+        self.font_app.title("Font")
+        self.font_app.geometry("300x200")
+        self.font_app.resizable(False, False)
+        self.combobox1 = CTkComboBox(self.font_app, values=["Arial", "Helvetica", "Times", "Courier", "Verdana", "Impact", "Comic Sans MS", "Fixedsys", "MS Sans Serif", "MS Serif"])
+        self.combobox1.pack()
+        self.combobox2 = CTkComboBox(self.font_app, values=["9", "10", "12", "14", "16", "18", "20", "22"])
+        self.combobox2.pack()
+        self.button = CTkButton(self.font_app, text="set font", command=self.set_font)
+        self.button.pack()
+    
+    def set_font(self):
+        self.font_groesse = self.combobox2_get.get()
+        self.font_content = self.combobox1_get.get()
+        self.file_content.config(font=f"{self.font_content} {self.font_groesse} bold")
+        self.font_app.destroy()
     
     def rename(self):
         self.author_name = self.entry.get()
