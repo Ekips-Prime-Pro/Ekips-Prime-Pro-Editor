@@ -190,7 +190,6 @@ class gui:
         self.usb.add_command(label="Wireless", command=connect.wireless_connection)
         self.usb.add_command(label="Select Port", command=self.select_port)
         
-        
         self.help = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Help", menu=self.help)
         self.help.add_command(label="Credit", command=self.credit)
