@@ -30,6 +30,8 @@ The features are programmd to better integrate the [Custom Spike Prime Compiler 
 
 ## Tools
 
+The tools will be easy to understandt and documentet, also these will be developt to be more intuitive.
+
 - Text editor
 - Compiler and debugger for Custom Spike Prime Programming Language
 - Connect with Spike -> v3.0
@@ -40,23 +42,11 @@ The features are programmd to better integrate the [Custom Spike Prime Compiler 
 
 ## Examples
 
+## License
 
+[Apache License](http://www.apache.org/licenses/)
+Version 2.0, January 2004
 
+## Contact
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+If you have any questions or need further assistance, please contact us at <iron.ai.dev@gmail.com>
