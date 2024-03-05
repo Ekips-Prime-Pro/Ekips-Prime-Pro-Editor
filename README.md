@@ -1,5 +1,7 @@
 # Spike Custom System Programming
 
+[![Application](https://github.com/Spike-Prime-Pro/Spike-Custom-Programming-Language-and-Compiler/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/Spike-Prime-Pro/Spike-Custom-Text-Editor/actions/workflows/python-app.yml)
+
 This is the GUI manual for the Python based Programming language. This is the optimised Text Editor for the Spike Custom System Programming language.
 
 ## Table of Contents
