@@ -30,6 +30,10 @@ The features are programmd to better integrate the [Custom Spike Prime Compiler 
 
 ## Tools
 
+- Text editor
+- Compiler and debugger
+- Connect with Spike -> v3.0
+
 ## Guide
 
 ## Examples
