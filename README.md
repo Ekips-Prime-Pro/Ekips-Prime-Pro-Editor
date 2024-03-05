@@ -31,7 +31,7 @@ The features are programmd to better integrate the [Custom Spike Prime Compiler 
 ## Tools
 
 - Text editor
-- Compiler and debugger
+- Compiler and debugger for Custom Spike Prime Programming Language
 - Connect with Spike -> v3.0
 
 ## Guide
