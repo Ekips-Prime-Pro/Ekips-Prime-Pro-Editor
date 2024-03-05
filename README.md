@@ -33,7 +33,30 @@ The features are programmd to better integrate the [Custom Spike Prime Compiler 
 - Text editor
 - Compiler and debugger for Custom Spike Prime Programming Language
 - Connect with Spike -> v3.0
+- Error hight lighting -> v2.0
+- Self explaining usage
 
 ## Guide
 
 ## Examples
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
