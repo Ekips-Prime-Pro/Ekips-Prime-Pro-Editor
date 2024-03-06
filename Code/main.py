@@ -172,10 +172,9 @@ class gui:
         
         self.tools = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Tools", menu=self.tools)
-        self.tools.add_command(label="Debug", command=lambda: compiler_gui)
-        self.tools.add_command(label="Compile", command=lambda: compiler_gui)
+        self.tools.add_command(label="Debug", command=lambda: select_file_deb())
+        self.tools.add_command(label="Compile", command=lambda: select_file())
         self.tools.add_command(label="Pull", command=tools.pull)
-        self.tools.add_command(label="compile to llsp3 file", command=compiler_gui)
         
         self.spike = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Spike", menu=self.spike)
@@ -262,6 +261,20 @@ class gui:
     def reset(self):
         for widget in self.winfo_children():
             widget.destroy()
+    
+    def select_file(self):
+        file = filedialog.askopenfilename(filetypes=[("Ekips System Programming", "*.ssp")])
+        if file:
+            self.file = file
+            compiler.compile(file)
+            compiler.main(file)
+    
+    def select_file_deb(self):
+        file = filedialog.askopenfilename(filetypes=[("Ekips System Programming", "*.ssp")])
+        if file:
+            self.file = file
+            debugger.compile(file)
+            debugger.main(file)
 
 
 class update:
@@ -295,64 +308,112 @@ class tools:
     
     def push():
         pass
-    
-
-class compiler_gui:
-    def __init__(self):
-        self.root1 = CTk()
-        self.root1.title("Spike Custom Programming Language Compiler")
-        self.root1.geometry("400x450")
-        self.root1.iconbitmap("icon.ico")
-        self.main_frame()
-        self.root1.mainloop()  
-
-    def main_frame(self):
-        heief = 40
-        wighf = 120
-        CTkLabel(self.root1, text="Spike Custom Programming Language Compiler", text_color="Blue").pack(pady=10)
-        CTkButton(self.root1, text="select and compile file", command=self.select_file, corner_radius=32, width=wighf, height=heief).pack(pady=10)
-        CTkButton(self.root1, text="License", command=self.licence, corner_radius=32, width=wighf, height=heief).pack(pady=10)
-        CTkButton(self.root1, text="About", command=self.about, corner_radius=32, width=wighf, height=heief).pack(pady=10)
-        CTkButton(self.root1, text="GitHub", command=self.github, corner_radius=32, width=wighf, height=heief).pack(pady=10)
-        CTkButton(self.root1, text="Help", command=self.help_web, corner_radius=32, width=wighf, height=heief).pack(pady=10)
-        CTkLabel(self.root1, text="Maximilian Gründinger\nFirst Lego League Team PaRaMeRoS", text_color="Blue").pack(pady=10)
-        CTkLabel(self.root1, text="Version 0.2", text_color="Blue").pack(pady=10)
-
-    def licence(self):
-        messagebox.showinfo("License", f"Spike Custom System Programming License Agreement\nThis License Agreement (the 'Agreement') is entered into by and between Maximilian Gründinger ('Licensor') and the First Lego League Team known as PaRaMeRoS ('Licensee').\n1. License Grant.\nLicensor hereby grants Licensee a non-exclusive, non-transferable license to use and modify the software program known as Spike Custom System Programming (the 'Program') solely for educational and non-commercial purposes. This license is granted exclusively to the members of the First Lego League Team identified as PaRaMeRoS.\n2. Restrictions.\nLicensee shall not, and shall not permit others to:\na. Use the Program for any purpose other than educational and non-commercial activities within the First Lego League Team.\nb. Allow non-members of the First Lego League Team to use or access the Program.\nc. Commercialize or distribute the Program for financial gain.\nd. Remove or alter any copyright, trademark, or other proprietary notices contained in the Program.\n3. Security.\nLicensor makes no warranties regarding the security of the Program. Licensee acknowledges and agrees that any use of the Program is at their own risk. Licensor shall not be responsible for any security bugs or issues that may arise in connection with the Program.\n4. Term and Termination.\nThis Agreement shall remain in effect until terminated by either party. Licensor reserves the right to terminate this Agreement immediately if Licensee breaches any of its terms. Upon termination, Licensee shall cease all use of the Program and destroy all copies in their possession.\n5. Disclaimer of Warranty.\nTHE PROGRAM IS PROVIDED 'AS IS' WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. LICENSOR DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.\n6. Limitation of Liability.\nIN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM, EVEN IF LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.\n7. Governing Law.\nThis Agreement shall be governed by and construed in accordance with the laws of Germany, Bavaria, Munic.\n8. Entire Agreement.\nThis Agreement constitutes the entire agreement between the parties and supersedes all prior agreements, whether oral or written, with respect to the Program.\nIN WITNESS WHEREOF, the parties hereto have executed this License Agreement as of the effective date.\nLicensor:\nMaximilian Gründinger\nLicensee:\nPaRaMeRoS\nDate: 1.1.2024")
-            
-    def select_file(self):
-        file = filedialog.askopenfilename(filetypes=[("Spike Custom System Programming", "*.scsp")])
-        if file:
-            self.file = file
-            compiler.compile(file)
-            compiler.main(file)
-            
-    def credit(self):
-        messagebox.showinfo("Credit", "Maximilian Gründinger\nFirst Lego League Team PaRaMeRoS")
-        
-    def about(self):
-        messagebox.showinfo("About", "Spike Custom System Programming\nVersion 0.0.1\nMaximilian Gründinger\nFirst Lego League Team PaRaMeRoS")
-    
-    def github(self):
-        website.open("https://github.com/Iron-witch/Coding_lang_spike_PaRaMeRoS")
-        
-    def help_web(self):
-        messagebox.showinfo("Help", "For help and documentation please visit the GitHub page of the project")
-        website.open("https://github.com/Iron-witch/Coding_lang_spike_PaRaMeRoS/wiki")
      
+     
+class debugger:
+    def debug(file):
+        if file.endswith(".ssp"):
+            with open(file, "r") as f:
+                content = f.readlines()
+                for line in content:
+                    content_compile.append(line)
+                main_debug(file)            
+        else:
+            messagebox.askokcancel(f"Error: The file {file} is not a valid file type.")
+            sys.exit(1)
+    
+    def get_active_function(line):
+        content_line = line
+        function, variable = content_line.split("{")
+        variable = variable.replace("{","")
+        variable = variable.replace("}","")
+        variable = variable.replace("\n","")
+        return function, variable
+    
+    def debug_function(function,value=False):
+        print(f"Debuging {function} function...")
+        match function:
+            case "log":
+                pass
+            case "sleep":
+                check_for_format("int", value)
+            case "init":
+                pass
+            case "ai.chose":
+                value = f"{value}"
+                match value:
+                    case "supervised":
+                        pass
+                    case "unsupervised":
+                        pass
+                    case "deep_learning":
+                        pass
+                    case _:
+                        messagebox.askokcancel(f"Error: The AI {value} does not exist.")
+                        exit(1)
+            case "ai.init":
+                pass
+            case "module.init":
+                pass
+            case "motor.init":
+                pass
+            case "sensor.init":
+                pass
+            case "calibration.init":
+                pass
+            case "variable.init":
+                pass
+            case "drive":
+                check_for_format("int", value)
+            case "tank":
+                check_for_format("int", value)
+            case "obstacle":
+                check_for_format("int", value)
+            case "ai.sensor":
+                value = f"{value}"
+                match value:
+                    case "force":
+                        pass
+                    case "distance":
+                        pass
+                    case "color":
+                        pass
+                    case "gyro":
+                        pass
+                    case _:
+                        messagebox.askokcancel(f"Error: The sensor {value} does not exist.")
+                        exit(1)
+            case "module":
+                check_for_format("int", value)
+            case "calibrate":
+                pass
+            case "ai.data_save":
+                pass
+            case "ai.data_load":
+                pass
+            case "main.init":
+                pass
+            case _:
+                messagebox.askokcancel(f"Error: The function {function} does not exist.")
+                exit(1)
+
+    def main_debug(file):
+        for line in content_compile:
+            # Komentare herausfiltern
+            function, value = get_active_function(line)
+            debug_function(function, value)
+        
         
 class compiler:
     # Functions
     def compile(file):
-        click.echo(f"Compiling {file}...")
         if file.endswith(".ssp"):
             with open(file, "r") as f:
                 content = f.readlines()
                 for line in content:
                     content_compile.append(line)
         else:
-            click.echo(f"Error: The file {file} is not a valid file type.", err=True)
+            messagebox.askokcancel(f"Error: The file {file} is not a valid file type.")
             sys.exit(1)
 
     def get_active_function(line):
@@ -364,7 +425,6 @@ class compiler:
         return function, variable
 
     def write_function(function,file,value=False):
-        click.echo(f"Writing {function} function...")
         file_name = file.split(".")
         file_name = file_name[0]
         with open(f"{file_name}.py", "a") as f:
@@ -434,6 +494,9 @@ class compiler:
                 case "main.init":
                     f.write("runloop.run(main())\n")
                     f.write("async def main():\n")
+                case _:
+                    messagebox.askokcancel(f"Error: The function {function} does not exist.")
+                    exit(1)
 
     def main(file):
         file_name = file.split(".")
@@ -444,6 +507,7 @@ class compiler:
             # Komentare herausfiltern
             function, value = get_active_function(line)
             write_function(function, file, value)
+
 
 if __name__ == "__main__":
     gui()
