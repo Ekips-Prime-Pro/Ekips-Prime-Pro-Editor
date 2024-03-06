@@ -17,6 +17,7 @@ global file_name
 global file_content
 file_name = "N/A"
 file_content = "N/A"
+__version__ = "0.1.0.0"
 
 class gui:
     def __init__(self):
@@ -71,7 +72,7 @@ class gui:
             
     def save(self):
         if self.file == "N/A":
-            Files = [('Spike Custom System Programming', '*.scsp'), ('Text Document', '*.txt')]
+            Files = [('Ekips System Programming', '*.ssp'), ('Text Document', '*.txt')]
             file = filedialog.asksaveasfile(filetypes = Files, defaultextension = Files)
             file.write(self.file_content.get("1.0", "end-1c"))
             file.close()
@@ -105,7 +106,7 @@ class gui:
                     self.save()
                 else:
                     pass
-            file = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("Spike Custom System Programming", "*.scsp")])
+            file = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("Ekips System Programming", "*.ssp")])
             self.file_label.config(text=f"File: {file}")
             with open(file, "r") as f:
                 # TODO:Delete the Author tag from the str and just let the file_content be the content of the str
@@ -128,7 +129,7 @@ class gui:
         self.toolbar()
 
     def licence(self):
-        messagebox.showinfo("License", f"Spike Custom System Programming License Agreement\nThis License Agreement (the 'Agreement') is entered into by and between Maximilian Gründinger ('Licensor') and the First Lego League Team known as PaRaMeRoS ('Licensee').\n1. License Grant.\nLicensor hereby grants Licensee a non-exclusive, non-transferable license to use and modify the software program known as Spike Custom System Programming (the 'Program') solely for educational and non-commercial purposes. This license is granted exclusively to the members of the First Lego League Team identified as PaRaMeRoS.\n2. Restrictions.\nLicensee shall not, and shall not permit others to:\na. Use the Program for any purpose other than educational and non-commercial activities within the First Lego League Team.\nb. Allow non-members of the First Lego League Team to use or access the Program.\nc. Commercialize or distribute the Program for financial gain.\nd. Remove or alter any copyright, trademark, or other proprietary notices contained in the Program.\n3. Security.\nLicensor makes no warranties regarding the security of the Program. Licensee acknowledges and agrees that any use of the Program is at their own risk. Licensor shall not be responsible for any security bugs or issues that may arise in connection with the Program.\n4. Term and Termination.\nThis Agreement shall remain in effect until terminated by either party. Licensor reserves the right to terminate this Agreement immediately if Licensee breaches any of its terms. Upon termination, Licensee shall cease all use of the Program and destroy all copies in their possession.\n5. Disclaimer of Warranty.\nTHE PROGRAM IS PROVIDED 'AS IS' WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. LICENSOR DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.\n6. Limitation of Liability.\nIN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM, EVEN IF LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.\n7. Governing Law.\nThis Agreement shall be governed by and construed in accordance with the laws of Germany, Bavaria, Munic.\n8. Entire Agreement.\nThis Agreement constitutes the entire agreement between the parties and supersedes all prior agreements, whether oral or written, with respect to the Program.\nIN WITNESS WHEREOF, the parties hereto have executed this License Agreement as of the effective date.\nLicensor:\nMaximilian Gründinger\nLicensee:\nPaRaMeRoS\nDate: 1.1.2024")
+        messagebox.showinfo("License", f"Ekips System Programming License Agreement\nThis License Agreement (the 'Agreement') is entered into by and between Maximilian Gründinger ('Licensor') and the First Lego League Team known as PaRaMeRoS ('Licensee').\n1. License Grant.\nLicensor hereby grants Licensee a non-exclusive, non-transferable license to use and modify the software program known as Spike Custom System Programming (the 'Program') solely for educational and non-commercial purposes. This license is granted exclusively to the members of the First Lego League Team identified as PaRaMeRoS.\n2. Restrictions.\nLicensee shall not, and shall not permit others to:\na. Use the Program for any purpose other than educational and non-commercial activities within the First Lego League Team.\nb. Allow non-members of the First Lego League Team to use or access the Program.\nc. Commercialize or distribute the Program for financial gain.\nd. Remove or alter any copyright, trademark, or other proprietary notices contained in the Program.\n3. Security.\nLicensor makes no warranties regarding the security of the Program. Licensee acknowledges and agrees that any use of the Program is at their own risk. Licensor shall not be responsible for any security bugs or issues that may arise in connection with the Program.\n4. Term and Termination.\nThis Agreement shall remain in effect until terminated by either party. Licensor reserves the right to terminate this Agreement immediately if Licensee breaches any of its terms. Upon termination, Licensee shall cease all use of the Program and destroy all copies in their possession.\n5. Disclaimer of Warranty.\nTHE PROGRAM IS PROVIDED 'AS IS' WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. LICENSOR DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.\n6. Limitation of Liability.\nIN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM, EVEN IF LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.\n7. Governing Law.\nThis Agreement shall be governed by and construed in accordance with the laws of Germany, Bavaria, Munic.\n8. Entire Agreement.\nThis Agreement constitutes the entire agreement between the parties and supersedes all prior agreements, whether oral or written, with respect to the Program.\nIN WITNESS WHEREOF, the parties hereto have executed this License Agreement as of the effective date.\nLicensor:\nMaximilian Gründinger\nLicensee:\nPaRaMeRoS\nDate: 1.1.2024")
     
     def toolbar(self, mode=None):
         self.left_frame = CTkFrame(self.app)
@@ -144,7 +145,7 @@ class gui:
         for p in port:
             print(p.device)
         self.app1 = CTk()
-        self.app1.title("Spike Prime Custom System Programming") # File extension .scsp
+        self.app1.title("Ekips System Programming") # File extension .ssp
         self.app1.geometry("300x200")
         self.app1.resizable(True, True)
         self.app1.iconbitmap("icon.ico")
@@ -249,14 +250,14 @@ class gui:
         messagebox.showinfo("Credit", "Maximilian Gründinger\nFirst Lego League Team PaRaMeRoS")
         
     def about(self):
-        messagebox.showinfo("About", "Spike Custom System Programming\nVersion 0.0.1\nMaximilian Gründinger\nFirst Lego League Team PaRaMeRoS")
+        messagebox.showinfo("About", f"Spike Custom System Programming\nVersion {__version__}\nMaximilian Gründinger\nFirst Lego League Team PaRaMeRoS")
     
     def github(self):
-        website.open("https://github.com/Iron-witch/Coding_lang_spike_PaRaMeRoS")
+        website.open("https://github.com/Ekips-Prime-Pro/Ekips-Prime-Pro-Editor")
         
     def help_web(self):
         messagebox.showinfo("Help", "For help and documentation please visit the GitHub page of the project")
-        website.open("https://github.com/Iron-witch/Coding_lang_spike_PaRaMeRoS/wiki")
+        website.open("https://github.com/Ekips-Prime-Pro/Ekips-Prime-Pro-Editor")
         
     def reset(self):
         for widget in self.winfo_children():
@@ -345,7 +346,7 @@ class compiler:
     # Functions
     def compile(file):
         click.echo(f"Compiling {file}...")
-        if file.endswith(".scsp"):
+        if file.endswith(".ssp"):
             with open(file, "r") as f:
                 content = f.readlines()
                 for line in content:
@@ -356,7 +357,7 @@ class compiler:
 
     def get_active_function(line):
         content_line = line
-        function, variable = content_line.split("(")
+        function, variable = content_line.split("{")
         variable = variable.replace("{","")
         variable = variable.replace("}","")
         variable = variable.replace("\n","")
