@@ -320,7 +320,6 @@ class debugger:
                 main_debug(file)            
         else:
             messagebox.askokcancel(f"Error: The file {file} is not a valid file type.")
-            sys.exit(1)
     
     def get_active_function(line):
         content_line = line
@@ -350,7 +349,6 @@ class debugger:
                         pass
                     case _:
                         messagebox.askokcancel(f"Error: The AI {value} does not exist.")
-                        exit(1)
             case "ai.init":
                 pass
             case "module.init":
@@ -382,7 +380,6 @@ class debugger:
                         pass
                     case _:
                         messagebox.askokcancel(f"Error: The sensor {value} does not exist.")
-                        exit(1)
             case "module":
                 check_for_format("int", value)
             case "calibrate":
@@ -395,7 +392,6 @@ class debugger:
                 pass
             case _:
                 messagebox.askokcancel(f"Error: The function {function} does not exist.")
-                exit(1)
 
     def main_debug(file):
         for line in content_compile:
@@ -496,7 +492,6 @@ class compiler:
                     f.write("async def main():\n")
                 case _:
                     messagebox.askokcancel(f"Error: The function {function} does not exist.")
-                    exit(1)
 
     def main(file):
         file_name = file.split(".")
