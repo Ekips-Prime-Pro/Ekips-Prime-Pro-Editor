@@ -4,7 +4,6 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
 from customtkinter import *
-import os
 import sys
 import shutil
 import webbrowser as website
@@ -17,7 +16,7 @@ global file_name
 global file_content
 file_name = "N/A"
 file_content = "N/A"
-__version__ = "0.1.0.0"
+__version__ = "0.2.0.0"
 
 class gui:
     def __init__(self):
