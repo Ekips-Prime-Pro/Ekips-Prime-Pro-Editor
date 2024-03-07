@@ -1,8 +1,8 @@
 #Calibrate function
 async def calibrate(speed=1000, acceleration=1000):
-        if (distance_sensor.distance(port.C) < 110):
+        if distance_sensor.distance(port.C) < 110:
             print("Calibration not possible! | Distance to small!")
-        elif (distance_sensor.distance(port.C) > 110):
+        elif distance_sensor.distance(port.C) > 110:
             try:
                 await drive(-1, 14, speed, acceleration)
                 distance0 = distance_sensor.distance(port.C)
