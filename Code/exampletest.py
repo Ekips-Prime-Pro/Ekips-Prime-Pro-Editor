@@ -1,5 +1,5 @@
 #mode for the run
-mode = 0
+mode = 1
 
 
 #from _typeshed import SupportsWrite
