@@ -8,6 +8,10 @@ import sys
 import shutil
 import webbrowser as website
 #import usb.core 
+import zipfile
+import json
+import os
+from datetime import datetime
 import serial as list_ports
 import socket
 
@@ -16,7 +20,19 @@ global file_name
 global file_content
 file_name = "N/A"
 file_content = "N/A"
-__version__ = "1.0.0"
+__version__ = "0.0.0.0"
+conf_file = "conf.json"
+llsp3_file_path = 'Projekt.llsp3'
+extracted_folder = llsp3_file_path + 'projectbody.json'
+
+with open(conf_file, "r") as file:
+    content = json.load(file)
+    calibrate = content["calibrate"]
+    __version__ = content["version"]
+    module = content["module"]
+    motor = content["motor"]
+    sensor = content["sensor"]
+    variables = content["variables"]
 
 class gui:
     def __init__(self):
@@ -316,7 +332,7 @@ class debugger:
                 content = f.readlines()
                 for line in content:
                     content_compile.append(line)
-                main_debug(file)            
+                main_debug(file)
         else:
             messagebox.askokcancel(f"Error: The file {file} is not a valid file type.")
     
@@ -455,77 +471,88 @@ class compiler:
         return function, variable
 
     def write_function(function,file,value=False):
+        """
+        Writes the specified function and its value to a Python file.
+
+        Parameters:
+            function (str): The function to write.
+            file (str): The name of the file to write to.
+            value (str, optional): The value associated with the function. Defaults to False.
+        """
+        print(f"Writing {function} function...")
         file_name = file.split(".")
         file_name = file_name[0]
         with open(f"{file_name}.py", "a") as f:
             match function:
                 case "log":
-                    print_out = f"print('{str(value)}')\n"
+                    print_out = f"\nprint('{str(value)}')"
                     f.write(print_out)
                 case "sleep":
-                    sleep_out = f"time.sleep({str(value)})\n"
+                    sleep_out = f"\ntime.sleep({str(value)})"
                     f.write(sleep_out)
                 case "init":
-                    init_out = f"import force_sensor, distance_sensor, motor, motor_pair\nfrom hub import port\nimport time\nfrom app import linegraph as ln\nimport runloop\nfrom math import *\nimport random\n"
+                    init_out = f"\nimport force_sensor, distance_sensor, motor, motor_pair\nfrom hub import port\nimport time\nfrom app import linegraph as ln\nimport runloop\nfrom math import *\nimport random\n"
                     f.write(init_out)
                 case "ai.chose":
                     ai_chose_out = f"ai_chose = '{str(value)}'\n"
                     f.write(ai_chose_out)
                 case "ai.init":
-                    ai_init_out = f"ai = runloop.AI()\n"
+                    ai_init_out = f"\nai = runloop.AI()\n"
                     f.write(ai_init_out)
                     with open("ai.fll", "r") as r:
                         ai_content = r.readlines()
                         for line in ai_content:
                             f.write(line)
                 case "module.init":
-                    with open("module.fll", "r") as r:
-                        ai_content = r.readlines()
-                        for line in ai_content:
-                            f.write(line)
+                    ai_content = module
+                    for line in ai_content:
+                        f.write(line)
                 case "motor.init":
-                    with open("motor.fll", "r") as r:
-                        ai_content = r.readlines()
-                        for line in ai_content:
-                            f.write(line)
+                    ai_content = motor
+                    for line in ai_content:
+                        f.write(line)
                 case "sensor.init":
-                    with open("sensor.fll", "r") as r:
-                        ai_content = r.readlines()
-                        for line in ai_content:
-                            f.write(line)
+                    ai_content = sensor
+                    for line in ai_content:
+                        f.write(line)
                 case "calibration.init":
-                    with open("calibration.fll", "r") as r:
-                        ai_content = r.readlines()
-                        for line in ai_content:
-                            f.write(line)
-                case "variables.init":
-                    with open("variables.fll", "r") as r:
-                        ai_content = r.readlines()
-                        for line in ai_content:
-                            f.write(line)
+                    ai_content = calibrate
+                    for line in ai_content:
+                       f.write(line)
+                case "variable.init":
+                    ai_content = variables
+                    for line in ai_content:
+                        f.write(line)
                 case "drive":
-                    f.write(f"  await drive({value})\n")
+                    f.write(f"\n  await drive({value})\n")
                 case "tank":
-                    f.write(f"  await tank({value})\n")
+                    f.write(f"\n  await tank({value})\n")
                 case "obstacle":
-                    f.write(f"  await obstacle({value})\n")
+                    f.write(f"\n  await obstacle({value})\n")
                 case "ai.sensor":
                     # add the sensor to the ai input
-                    f.write(f"ai_sensor.append('{value}\n')")
+                    f.write(f"\nai_sensor.append('{value}\n')")
                 case "module":
-                    f.write(f"  await module({value})\n")
+                    f.write(f"\nawait module({value})\n")
                 case "calibrate":
-                    f.write("   await calibrate()\n")
+                    f.write("\n   await calibrate()\n")
                 case "ai.data_save":
-                    f.write(f"  write_ai_data('{value}')\n")
+                    f.write(f"\n  write_ai_data('{value}')\n")
                 case "ai.data_load":
                     for line in value:
-                        f.write(f"ai_data.append({line})\n")
+                        f.write(f"\nai_data.append({line})\n")
                 case "main.init":
-                    f.write("runloop.run(main())\n")
-                    f.write("async def main():\n")
+                    f.write("\nasync def main():")
+                case "main.run":
+                    f.write("\nrunloop.run(main())")
                 case _:
-                    messagebox.askokcancel(f"Error: The function {function} does not exist.")
+                    if function == "//":
+                        f.write(f"# {value}")
+                    elif function == "#":
+                        f.write(f"# {value}")
+                    else:
+                        print(f"Error: The function {function} does not exist.")
+                        sys.exit(1)
 
     def compile_llsp3(file, directory, project_name):
         os.makedirs(directory, exist_ok=True)
