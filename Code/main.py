@@ -442,7 +442,7 @@ class debugger:
             function, value = get_active_function(line)
             debug_function(function, value)
         messagebox.showinfo("Debug", "The file has been successfully debugged.")
-        
+
 
 class compiler:
     # Functions
