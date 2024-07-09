@@ -15,10 +15,10 @@ from datetime import datetime
 import serial as list_ports
 import socket
 
-#TODO: remove global variables
 global file_name
 global file_content
 file_name = "N/A"
+content_compile = []
 file_content = "N/A"
 __version__ = "0.0.0.0"
 conf_file = "conf.json"
@@ -48,6 +48,7 @@ class gui:
         self.app.geometry("800x600")
         self.app.resizable(True, True)
         self.app.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.app.bind('<Control-s>', lambda: self.save())
         self.app.iconbitmap("icon.ico")
         self.setup()
         self.main_programm()
@@ -62,7 +63,6 @@ class gui:
         self.setup.resizable(False, False)
         self.setup.iconbitmap("icon.ico")
         self.app.protocol("WM_DELETE_WINDOW", self.on_closing)
-
         self.setup_Title1 = CTkLabel(self.setup, text="Setup", font=("Arial", 60))
         self.setup_Title2 = CTkLabel(self.setup, text="Program", font=("Arial", 60))
         self.setup_lang_lable = CTkLabel(self.setup, text="Language:", font=("Arial", 25))
@@ -86,16 +86,19 @@ class gui:
             exit(0)
             
     def save(self):
-        if self.file == "N/A":
-            Files = [('Ekips System Programming', '*.ssp'), ('Text Document', '*.txt')]
-            file = filedialog.asksaveasfile(filetypes = Files, defaultextension = Files)
-            file.write(self.file_content.get("1.0", "end-1c"))
-            file.close()
-            file = file.name
-            self.file_label.config(text=f"File: {file}")
-        else:
-            with open(self.file, "w") as f:
-                f.write(self.file_content.get("1.0", "end-1c"))
+        try:
+            if file_name == "N/A":
+                Files = [('Ekips Custom System Programming', '*.scsp'), ('Text Document', '*.txt')]
+                file = filedialog.asksaveasfile(filetypes = Files, defaultextension = Files)
+                file.write(self.file_content.get("1.0", "end-1c"))
+                file.close()
+                file = file.name
+                self.file_label.config(text=f"File: {file}")
+            else:
+                with open(self.file, "w") as f:
+                    f.write(self.file_content.get("1.0", "end-1c"))
+        except:
+            messagebox.showerror("Error", "Error while saving file")
     
     def update_gui(self):
         # TODO: add the update.py class
@@ -114,23 +117,23 @@ class gui:
             messagebox.showinfo("Update", "The Spike Operating System will not be updated")
     
     def open(self):
-        try:
+        #try:
             if self.file_content.get("1.0", "end-1c") != "": #TODO: add a messagebox to ask if the user want to save the file
                 msg = messagebox.askyesno("Save", "Do you want to save the file?")
                 if msg:
                     self.save()
                 else:
                     pass
-            file = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("Ekips System Programming", "*.ssp")])
-            self.file_label.config(text=f"File: {file}")
+            file = filedialog.askopenfilename(filetypes=[('Ekips Custom System Programming', '*.scsp'), ('Text Document', '*.txt')])
+            self.file_label.configure(text=f"File: {file}")
             with open(file, "r") as f:
                 # TODO:Delete the Author tag from the str and just let the file_content be the content of the str
+                file_name = file
                 content = f.readlines()
-                content = delete_line(content, 0)
                 self.file_content.delete("1.0", "end")
                 self.file_content.insert("1.0", f.read())
-        except:
-            messagebox.showerror("Error", "Error while opening file")
+        #except:
+        #    messagebox.showerror("Error", "Error while opening file")
     
     def main_programm(self):
         self.author_name = socket.gethostname()
@@ -160,7 +163,7 @@ class gui:
         for p in port:
             print(p.device)
         self.app1 = CTk()
-        self.app1.title("Ekips System Programming") # File extension .ssp
+        self.app1.title("Ekips System Programming") # File extension .scsp
         self.app1.geometry("300x200")
         self.app1.resizable(True, True)
         self.app1.iconbitmap("icon.ico")
@@ -187,8 +190,8 @@ class gui:
         
         self.tools = tk.Menu(self.menu, tearoff=0)
         self.menu.add_cascade(label="Tools", menu=self.tools)
-        self.tools.add_command(label="Debug", command=lambda: select_file_deb())
-        self.tools.add_command(label="Compile", command=lambda: select_file())
+        self.tools.add_command(label="Debug", command=lambda: self.select_file_deb())
+        self.tools.add_command(label="Compile", command=lambda: self.select_file())
         self.tools.add_command(label="Pull", command=tools.pull)
         
         self.spike = tk.Menu(self.menu, tearoff=0)
@@ -278,18 +281,17 @@ class gui:
             widget.destroy()
     
     def select_file(self):
-        file = filedialog.askopenfilename(filetypes=[("Ekips System Programming", "*.ssp")])
+        file = filedialog.askopenfilename(filetypes=[("Ekips System Programming", "*.scsp")])
         if file:
             self.file = file
             compiler.compile(file)
             compiler.main(file)
     
     def select_file_deb(self):
-        file = filedialog.askopenfilename(filetypes=[("Ekips System Programming", "*.ssp")])
+        file = filedialog.askopenfilename(filetypes=[("Ekips System Programming", "*.scsp")])
         if file:
             self.file = file
-            debugger.compile(file)
-            debugger.main(file)
+            debugger.main_debug(file)
 
 
 class update:
@@ -326,15 +328,6 @@ class tools:
      
      
 class debugger:
-    def debug(file):
-        if file.endswith(".ssp"):
-            with open(file, "r") as f:
-                content = f.readlines()
-                for line in content:
-                    content_compile.append(line)
-                main_debug(file)
-        else:
-            messagebox.askokcancel(f"Error: The file {file} is not a valid file type.")
     
     def check_for_format(requestet, value):
         """
@@ -435,7 +428,7 @@ class debugger:
                 elif function == "#":
                     pass
                 else:
-                    print(f"Error: The function {function} does not exist.")
+                    messagebox.showwarning(f"Error: The function {function} does not exist.")
 
     def main_debug(file):
         """
@@ -448,12 +441,13 @@ class debugger:
             # Komentare herausfiltern
             function, value = get_active_function(line)
             debug_function(function, value)
+        messagebox.showinfo("Debug", "The file has been successfully debugged.")
         
 
 class compiler:
     # Functions
     def compile(file):
-        if file.endswith(".ssp"):
+        if file.endswith(".scsp"):
             with open(file, "r") as f:
                 content = f.readlines()
                 for line in content:
